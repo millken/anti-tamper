@@ -1,0 +1,155 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "013b517b708cc2f9bf43a42d4d22a4b8",
+    "content-hash": "d56499e3f4f6b0d2fcccb846cfd536b7",
+    "packages": [
+        {
+            "name": "codecrafting/php-beanstalk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpcodecrafting/php-beanstalk.git",
+                "reference": "e6626979b0f9c2f6e68271911d30432d1d05db9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/phpcodecrafting/php-beanstalk/e6626979b0f9c2f6e68271911d30432d1d05db9d.zip",
+                "reference": "e6626979b0f9c2f6e68271911d30432d1d05db9d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Beanstalk\\": "lib/Beanstalk/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joshua Dechant",
+                    "email": "jdechant@shapeup.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP 5.5+ beanstalkd client",
+            "keywords": [
+                "beanstalkd",
+                "message queue",
+                "queueing",
+                "queues"
+            ],
+            "time": "2015-09-08 03:00:55"
+        },
+        {
+            "name": "millken/ypf",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/millken/ypf.git",
+                "reference": "56e085ea59bce031997d48cade28c8deb0d725c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/millken/ypf/56e085ea59bce031997d48cade28c8deb0d725c0.zip",
+                "reference": "56e085ea59bce031997d48cade28c8deb0d725c0",
+                "shasum": ""
+            },
+            "require": {
+                "mtdowling/cron-expression": "^1.1",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Ypf": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "millken",
+                    "email": "millken@gmail.com"
+                }
+            ],
+            "description": "PHP framework & Application Server.",
+            "homepage": "https://github.com/millken/ypf/",
+            "keywords": [
+                "framework",
+                "library",
+                "webserver"
+            ],
+            "time": "2016-04-25 10:02:50"
+        },
+        {
+            "name": "mtdowling/cron-expression",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mtdowling/cron-expression.git",
+                "reference": "c9ee7886f5a12902b225a1a12f36bb45f9ab89e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/mtdowling/cron-expression/c9ee7886f5a12902b225a1a12f36bb45f9ab89e5.zip",
+                "reference": "c9ee7886f5a12902b225a1a12f36bb45f9ab89e5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0|~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Cron": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "CRON for PHP: Calculate the next or previous run date and determine if a CRON expression is due",
+            "keywords": [
+                "cron",
+                "schedule"
+            ],
+            "time": "2016-01-26 21:23:30"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "millken/ypf": 20,
+        "codecrafting/php-beanstalk": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

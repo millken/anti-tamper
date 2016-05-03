@@ -1,0 +1,16 @@
+{
+    "name": "millken/anti-tamper",
+    "require": {
+        "millken/ypf": "dev-master",
+		"codecrafting/php-beanstalk": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "millken",
+            "email": "millken@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {
+    }
+}

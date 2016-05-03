@@ -6,12 +6,14 @@ date_default_timezone_set('Asia/Shanghai');
 define("__MODE__", "swoole");
 define("__APP__", __DIR__);
 define("__ROOT__", dirname(__DIR__));
-define("__CONF__", __DIR__ . '/conf.d');
-/*
-require (__DIR__ .'/vendor/autoload.php');
- */
-require __ROOT__ . '/Ypf/src/Ypf/Ypf.php';
-spl_autoload_register("\\Ypf\\Ypf::autoload");
+if (get_cfg_var('app.env')) {
+	define("__CONF__", __DIR__ . '/conf.d/' . get_cfg_var('app.env'));
+} else {
+	define("__CONF__", __DIR__ . '/conf.d/default');
+}
+require __DIR__ . '/vendor/autoload.php';
+//require __ROOT__ . '/Ypf/src/Ypf/Ypf.php';
+//spl_autoload_register("\\Ypf\\Ypf::autoload");
 $setting = array(
 	'root' => __DIR__,
 );
@@ -25,7 +27,7 @@ $app->setServerConfigIni(__CONF__ . '/server.conf');
 $app->setWorkerConfigPath(__CONF__ . '/worker/');
 
 //db
-$db = new \Ypf\Database\Mysql($config->get("db.test"));
+$db = new \Ypf\Database\Mysql($config->get("db.master"));
 $app->set('db', $db);
 
 //cache

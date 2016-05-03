@@ -4,8 +4,8 @@ namespace Controller\Home;
 
 class Index extends \Controller\Controller {
 	public function index() {
-		$urls = $this->db->table("urls")->where("status=1")->select();
-		print_r($urls);
+		$urls = $this->db->table("urls")->select();
+		$this->view->assign('urls', $urls);
 		$this->view->display("index.html");
 	}
 
