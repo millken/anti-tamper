@@ -26,6 +26,13 @@ $app->set('config', $config);
 $app->setServerConfigIni(__CONF__ . '/server.conf');
 $app->setWorkerConfigPath(__CONF__ . '/worker/');
 
+//log
+$logfile = new \Ypf\Log\Filter\File();
+$logfile->setFile($config->get('log.default.log_file'));
+$logmaster = new \Ypf\Log\Master();
+$logmaster->addFilter(\Ypf\Log\Level::ALL, $logfile, $config->get('log.default.log_layout'));
+$app->set('log', $logmaster);
+
 //db
 $db = new \Ypf\Database\Mysql($config->get("db.master"));
 $app->set('db', $db);

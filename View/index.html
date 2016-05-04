@@ -36,6 +36,7 @@ table.gridtable td {
       var ws = new WebSocket('ws://127.0.0.1:5701/');
       ws.onopen = function() {
         document.body.style.backgroundColor = '#cfc';
+		ws.send("i'm coming...");
       };
       ws.onclose = function() {
         document.body.style.backgroundColor = null;

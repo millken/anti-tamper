@@ -25,14 +25,13 @@ class Worker extends \Service\Service {
 			$header .= "Connection: close\r\n";
 			$header .= "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36\r\n";
 			$header .= "\r\n";
-			echo $header;
 			$cli->send($header);
 		});
 		$client->on("receive", function (\swoole_client $cli, $data) use ($url) {
 			list($header, $body) = explode("\r\n\r\n", $data, 2);
 
-			echo $header;
-			echo $body;
+			$this->log->trace($header);
+			$this->log->debug($body);
 			if (strpos($header, "200 OK") !== false) {
 				$this->diffUrlMd5($url, $body);
 			}
