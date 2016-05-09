@@ -2,7 +2,8 @@
     "name": "millken/anti-tamper",
     "require": {
         "millken/ypf": "dev-master",
-		"codecrafting/php-beanstalk": "dev-master"
+		"codecrafting/php-beanstalk": "dev-master",
+        "league/event": "^2.1"
     },
     "authors": [
         {

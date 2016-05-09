@@ -49,6 +49,11 @@ $app->set('request', new \Ypf\Swoole\Request());
 $response = new \Ypf\Swoole\Response();
 $app->set('response', $response);
 
+//events
+$events = new \Service\Events();
+$events->load($config->get('event'));
+$app->set('events', $events);
+
 //view
 $view = new \Controller\View();
 $view->setTemplateDir(__APP__ . '/View/');

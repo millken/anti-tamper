@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "013b517b708cc2f9bf43a42d4d22a4b8",
-    "content-hash": "d56499e3f4f6b0d2fcccb846cfd536b7",
+    "hash": "f170f4b157df1ce946cbefac87eb6876",
+    "content-hash": "55ee1f015821a4dab8af65a843c494d8",
     "packages": [
         {
             "name": "codecrafting/php-beanstalk",
@@ -52,6 +52,56 @@
                 "queues"
             ],
             "time": "2015-09-08 03:00:55"
+        },
+        {
+            "name": "league/event",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/event.git",
+                "reference": "ebc612ba587ab9411ffefa276d72398c57517c50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/thephpleague/event/ebc612ba587ab9411ffefa276d72398c57517c50.zip",
+                "reference": "ebc612ba587ab9411ffefa276d72398c57517c50",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "henrikbjorn/phpspec-code-coverage": "~1.0.1",
+                "phpspec/phpspec": "^2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Event\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Event package",
+            "keywords": [
+                "emitter",
+                "event",
+                "listener"
+            ],
+            "time": "2016-03-21 09:16:39"
         },
         {
             "name": "millken/ypf",
