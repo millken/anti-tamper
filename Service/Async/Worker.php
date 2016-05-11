@@ -2,7 +2,7 @@
 namespace Service\Async;
 
 class Worker extends \Service\Service {
-	public function getUrlMd5($url, $host = null) {
+	public function getUrlMd5($group, $url, $host = null) {
 		$info = parse_url($url);
 		if ($info === false) {
 			return;
@@ -32,13 +32,17 @@ class Worker extends \Service\Service {
 
 		$path = $path . ($query == '' ? '' : "?$query");
 
-		$client->get($path, function ($cli) use ($url) {
-			$this->diffUrlMd5($url, $cli->body);
+		$client->get($path, function ($cli) use ($group, $url) {
+			if ($cli->statusCode == 200) {
+				$this->diffUrlMd5($group, $url, $cli->body);
+			} else {
+				$this->log->warn("$url got status: {$cli->statusCode}");
+			}
 		});
 
 	}
 
-	private function diffUrlMd5($url, $body) {
+	private function diffUrlMd5($group, $url, $body) {
 		static $record;
 		$md5 = md5($body);
 		if (!isset($record[$url])) {
@@ -55,6 +59,7 @@ class Worker extends \Service\Service {
 			$id = $this->db->table("logs")->insert($data);
 			$data = [
 				'log_id' => $id,
+				'group' => $group,
 				'url' => $url,
 				'url_md5' => $md5,
 				'time' => time(),
