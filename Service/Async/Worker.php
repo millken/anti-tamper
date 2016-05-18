@@ -14,7 +14,7 @@ class Worker extends \Service\Service {
 		$host = $host == null ? $info['host'] : $host;
 		$header_host = $info['host'];
 		$port = isset($info['port']) ? $info['port'] : 80;
-		$path = $info['path'];
+		$path = isset($info['path']) ? $info['path']: '/';
 		$query = isset($info['query']) ? $info['query'] : '';
 
 		$client = new \swoole_http_client($host, $port);
@@ -45,16 +45,18 @@ class Worker extends \Service\Service {
 	private function diffUrlMd5($group, $url, $body) {
 		static $record;
 		$md5 = md5($body);
+		$is_trigger = true;
 		if (!isset($record[$url])) {
 			$record[$url] = $this->db->table("logs")->field("url_md5")
 				->where("url=?", $url)->order("id desc")->fetchOne();
+			$is_trigger = false;
 		}
 		if ($md5 != $record[$url]) {
 			$record[$url] = $md5;
 			$data = [
 				'url' => $url,
 				'url_md5' => $md5,
-				'url_body' => $body,
+				'url_body' => addslashes($body),
 			];
 			$id = $this->db->table("logs")->insert($data);
 			$data = [
@@ -64,7 +66,9 @@ class Worker extends \Service\Service {
 				'url_md5' => $md5,
 				'time' => time(),
 			];
-			$this->events->trigger("notification", $data);
+			if($is_trigger) {
+				$this->events->trigger("notification", $data);
+			}
 		}
 
 	}
