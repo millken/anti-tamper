@@ -31,13 +31,18 @@ class Worker extends \Service\Service {
 		]);
 
 		$path = $path . ($query == '' ? '' : "?$query");
-
+		$client->on("error", function($cli) use ($group, $url) {
+			$this->log->warn("$url got error: ". print_r($cli, true) . "");
+			$cli->close();
+			return;
+		});
 		$client->get($path, function ($cli) use ($group, $url) {
 			if ($cli->statusCode == 200) {
 				$this->diffUrlMd5($group, $url, $cli->body);
 			} else {
 				$this->log->warn("$url got status: {$cli->statusCode}");
 			}
+			$cli->close();
 		});
 
 	}

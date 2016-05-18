@@ -6,6 +6,7 @@ class Index extends \Controller\Controller {
 	static $map = [
 		'add' => 'Controller\Api\Url\add',
 		'del' => 'Controller\Api\Url\del',
+		'memory' => 'Controller\Api\Index\memory',
 	];
 	public function index() {
 		$data = $this->request->get;
@@ -15,5 +16,13 @@ class Index extends \Controller\Controller {
 			$this->ajaxReturn([]);
 		}
 
+	}
+
+	public function memory() {
+		$data = [
+			'usage' => memory_get_usage(),
+			'pid' => getmypid(),
+			];
+		$this->ajaxReturn($data);
 	}
 }
