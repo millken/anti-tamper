@@ -5,6 +5,7 @@ namespace Controller\Api;
 class Index extends \Controller\Controller {
 	static $map = [
 		'add' => 'Controller\Api\Url\add',
+		'del' => 'Controller\Api\Url\del',
 	];
 	public function index() {
 		$data = $this->request->get;

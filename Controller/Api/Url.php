@@ -48,4 +48,17 @@ class Url extends \Controller\Controller {
 
 		$this->ajaxReturn($data);
 	}
+
+	public function del() {
+		$group = $this->request->post('group', 'trim');
+		$this->db->table('urls')->where("`group`=?", $group)->delete();
+			$data = [
+				'status' => 1,
+				'info' => 'ok',
+			];
+
+		$this->ajaxReturn($data);
+	}
+
+	
 }
