@@ -1,21 +1,28 @@
 <?php
 
 namespace Controller\Home;
+use GuzzleHttp\Client;
 
 class Worker extends \Controller\Controller {
-	private $worker;
-	public function __construct() {
-		$this->worker = new \Service\Async\Worker();
-	}
 
 	public function loader() {
-		$urls = $this->db->table("urls")->where("status=1")->select();
+		$this->loadSensitiveWordMonitor();
+	}
 
+	private function loadSensitiveWordMonitor() {
+		$urls = $this->db->table("urls")->where("class='SensitiveMonitor' and status=1")->select();
+		$client = new Client();
 		foreach ($urls as $url) {
-			$interval = $url['interval'] > 0 ? $url['interval'] * 1000 : 60000;
-			swoole_timer_tick($interval, function () use ($url) {
-				$this->worker->getUrlMd5($url['url']);
-			});
+
+			$client->postAsync('http://127.0.0.1:9002/api/SensitiveWordMonitor?action=add', [
+				'form_params' => [
+					'url' => implode("|", array_filter([$url['url'], $url['host']])),
+					'interval' => $url['interval'],
+					'group' => $url['group'],
+					'keyword' => $url['keyword'],
+				],
+			])->wait();
+
 		}
 	}
 

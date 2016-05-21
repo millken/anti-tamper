@@ -3,7 +3,9 @@
     "require": {
         "millken/ypf": "dev-master",
 		"codecrafting/php-beanstalk": "dev-master",
-        "league/event": "^2.1"
+        "league/event": "^2.1",
+        "baijian/ahocorasick": "^0.0.1",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "authors": [
         {
