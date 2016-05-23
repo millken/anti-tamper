@@ -1,20 +1,11 @@
 <?php
 namespace Service\Worker;
 
-use Baijian\Algorithm\AhoCorasick;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 
-class SensitiveWordMonitor extends \Service\Service {
-	private $ac;
-
-	public function setKeyword($keyword) {
-		$blacklist = array_unique(array_filter(array_map('trim', explode(",", $keyword))));
-		$this->ac = new AhoCorasick();
-		$this->ac->build_tree($blacklist);
-	}
-
+class TamperMonitor extends \Service\Service {
 	public function start($group, $url, $host = null) {
 		$info = parse_url($url);
 		if ($info === false) {
@@ -61,15 +52,34 @@ class SensitiveWordMonitor extends \Service\Service {
 
 	private function running($group, $url, $body) {
 
-		$data = [
-			'class' => 'SensitiveWordMonitor',
-			'group' => $group,
-			'url' => $url,
-			'time' => time(),
-		];
-		$acr = $this->ac->find($body);
-		if ($acr) {
-			$this->events->trigger("notification", $data);
+		static $record;
+		$md5 = md5($body);
+		$is_trigger = true;
+		if (!isset($record[$url])) {
+			$record[$url] = $this->db->table("logs")->field("url_md5")
+				->where("url=?", $url)->order("id desc")->fetchOne();
+			$is_trigger = false;
+		}
+		if ($md5 != $record[$url]) {
+			$record[$url] = $md5;
+			$data = [
+				'url' => $url,
+				'url_md5' => $md5,
+				'url_body' => addslashes($body),
+			];
+			$id = $this->db->table("logs")->insert($data);
+			$data = [
+				'class' => 'TamperMonitor',
+
+				'log_id' => $id,
+				'group' => $group,
+				'url' => $url,
+				'url_md5' => $md5,
+				'time' => time(),
+			];
+			if ($is_trigger) {
+				$this->events->trigger("notification", $data);
+			}
 		}
 
 	}

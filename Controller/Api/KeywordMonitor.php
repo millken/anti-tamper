@@ -36,6 +36,7 @@ class KeywordMonitor extends \Controller\Controller {
 				'url' => $url,
 				'group' => $group,
 				'interval' => $interval,
+				'keyword' => $keyword,
 				'status' => 1,
 			];
 			$this->worker = new \Service\Worker\KeywordMonitor();

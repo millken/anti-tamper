@@ -4,6 +4,7 @@ namespace Controller\Api;
 
 class SensitiveWordMonitor extends \Controller\Controller {
 	private $worker;
+	static $lru;
 
 	public function index() {
 		$action = $this->request->get('action', 'trim', '');
@@ -20,12 +21,21 @@ class SensitiveWordMonitor extends \Controller\Controller {
 	}
 
 	private function add() {
+		if (self::$lru == null) {
+			self::$lru = new \Ypf\Cache\Lrucache(10);
+		}
+		$defaultkeyword = self::$lru->cache('defaultViolationWord', function () {
+
+			$defaultViolationWord = file_get_contents(__CONF__ . '/ViolationWord.txt');
+			return str_replace(["\r\n", "\n"], ",", $defaultViolationWord);
+		});
 		$interval = $this->request->post("interval", "intval", 60);
 		$group = $this->request->post('group', 'trim', '');
 		$url = $this->request->post('url', 'trim', '');
 		$keyword = $this->request->post('keyword', 'trim', '');
+
 		$this->log->info("got post data : " . print_r($this->request->post, true));
-		if ($group && $interval > 0 && $url && $keyword) {
+		if ($group && $interval > 0 && $url) {
 			$this->db->table('urls')->where("class='SensitiveMonitor' and `group`=?", $group)->delete();
 			$host = null;
 			if (strpos($url, "|") !== false) {
@@ -41,6 +51,9 @@ class SensitiveWordMonitor extends \Controller\Controller {
 				'status' => 1,
 			];
 			$this->worker = new \Service\Worker\SensitiveWordMonitor();
+			if (empty($keyword)) {
+				$keyword = $defaultkeyword;
+			}
 			$this->worker->setKeyword($keyword);
 			$id = $this->db->table("urls")->insert($data);
 			swoole_timer_tick($interval * 1000, function ($timer_id) use ($id, $group, $url, $host) {

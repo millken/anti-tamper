@@ -4,8 +4,6 @@ namespace Controller\Api;
 
 class Index extends \Controller\Controller {
 	static $map = [
-		'add' => 'Controller\Api\Url\add',
-		'del' => 'Controller\Api\Url\del',
 		'memory' => 'Controller\Api\Index\memory',
 	];
 	public function index() {
@@ -22,7 +20,7 @@ class Index extends \Controller\Controller {
 		$data = [
 			'usage' => memory_get_usage(),
 			'pid' => getmypid(),
-			];
+		];
 		$this->ajaxReturn($data);
 	}
 }
