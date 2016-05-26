@@ -22,9 +22,10 @@ class TamperMonitor extends \Controller\Controller {
 	private function add() {
 		$interval = $this->request->post("interval", "intval", 60);
 		$group = $this->request->post('group', 'trim', '');
-		$urls = isset($this->request->post['url']) ? array_unique($this->request->post['url']) : [];
+		$urls = isset($this->request->post['url']) ? $this->request->post['url'] : [];
 		$this->log->info("got post data : " . print_r($this->request->post, true));
-		if ($group && $interval > 0 && count($urls)) {
+		if ($group && $interval > 0 && is_array($urls) && count($urls)) {
+			$urls = array_unique($urls);
 			$this->db->table('urls')->where("class='TamperMonitor' and `group`=?", $group)->delete();
 			foreach ($urls as $url) {
 
