@@ -3,9 +3,10 @@ namespace Service\Worker;
 
 class KeywordMonitor extends \Service\Service {
 	private $regex;
+	private $keyword = [];
 
 	public function setKeyword($keyword) {
-		$blacklist = array_map('trim', explode(",", $keyword));
+		$this->keyword = array_unique(array_map('trim', explode(",", $keyword)));
 		$this->regex = sprintf('~%s~', implode('|', array_map(function ($value) {
 			if (isset($value[0]) && $value[0] == '[') {
 				$value = substr($value, 1, -1);
@@ -13,7 +14,7 @@ class KeywordMonitor extends \Service\Service {
 				$value = preg_quote($value);
 			}
 			return '(?:' . $value . ')';
-		}, array_unique($blacklist))));
+		}, $this->keyword)));
 
 	}
 	public function start($group, $url, $host = null) {
@@ -33,7 +34,7 @@ class KeywordMonitor extends \Service\Service {
 
 		$client = new \swoole_http_client($host, $port);
 		$client->set([
-			'timeout' => 3,
+			'timeout' => 7,
 			'keep_alive' => 0,
 		]);
 
@@ -69,7 +70,10 @@ class KeywordMonitor extends \Service\Service {
 			'url' => $url,
 			'time' => time(),
 		];
-		if (preg_match($this->regex, $body)) {
+		preg_match_all($this->regex, $body, $match);
+		$lostword = array_diff($this->keyword, $match[0]);
+		if ($lostword) {
+			$data['keyword'] = $lostword;
 			$this->events->trigger("notification", $data);
 		}
 

@@ -41,7 +41,7 @@ class SensitiveWordMonitor extends \Service\Service {
 		$nurl = sprintf("%s://%s:%d%s", $scheme, $host, $port, $path);
 		$client = new Client();
 		$promise = $client->getAsync($nurl, [
-			'timeout' => 3.14,
+			'timeout' => 7.14,
 			'headers' => $headers,
 		]);
 		$promise->then(
@@ -69,6 +69,7 @@ class SensitiveWordMonitor extends \Service\Service {
 		];
 		$acr = $this->ac->find($body);
 		if ($acr) {
+			$data['keyword'] = array_column($acr, 'kw');
 			$this->events->trigger("notification", $data);
 		}
 
