@@ -6,9 +6,10 @@ use GuzzleHttp\Client;
 class Worker extends \Controller\Controller {
 
 	public function loader() {
-		$this->loadKeywordMonitor();
-		$this->loadSensitiveWordMonitor();
-		$this->loadTamperMonitor();
+		//	$this->loadKeywordMonitor();
+		//	$this->loadSensitiveWordMonitor();
+		//	$this->loadTamperMonitor();
+		$this->loadDnsHijackMonitor();
 	}
 
 	private function loadKeywordMonitor() {
@@ -69,6 +70,24 @@ class Worker extends \Controller\Controller {
 					'group' => $group,
 				],
 			])->wait();
+		}
+	}
+
+	private function loadDnsHijackMonitor() {
+		$this->log->info("loading DnsHijackMonitor task...");
+		$rows = $this->db->table("dnshijack_monitor")->where("status=1")->select();
+		$client = new Client();
+		foreach ($rows as $row) {
+
+			$client->postAsync('http://127.0.0.1:9002/api/DnsHijackMonitor?action=add', [
+				'form_params' => [
+					'interval' => $row['interval'],
+					'group' => $row['group'],
+					'subdomain' => $row['subdomain'],
+					'ext_ips' => $row['ext_ips'],
+				],
+			])->wait();
+
 		}
 	}
 }

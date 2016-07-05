@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a0773a4cef86eeb200a0ccc509d76066",
-    "content-hash": "0a67572292933457581dc584d13d59fc",
+    "hash": "fcbc65b606dfcbbc8401ff5648465ed1",
+    "content-hash": "d5c339bcb371416d3614bbc7e1acb1f7",
     "packages": [
         {
             "name": "baijian/ahocorasick",
@@ -96,6 +96,39 @@
                 "queues"
             ],
             "time": "2015-09-08 03:00:55"
+        },
+        {
+            "name": "daverandom/libdns",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DaveRandom/LibDNS.git",
+                "reference": "67de5497e84d179dffc089c5eb6a1945eb4e9460"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/DaveRandom/LibDNS/67de5497e84d179dffc089c5eb6a1945eb4e9460.zip",
+                "reference": "67de5497e84d179dffc089c5eb6a1945eb4e9460",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LibDNS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "DNS protocol implementation written in pure PHP",
+            "keywords": [
+                "dns"
+            ],
+            "time": "2016-04-29 20:47:45"
         },
         {
             "name": "guzzlehttp/guzzle",
