@@ -41,9 +41,10 @@ class DnsHijackMonitor extends \Service\Service {
 		return 0 === substr_compare(sprintf('%032b', ip2long($requestIp)), sprintf('%032b', ip2long($address)), 0, $netmask);
 	}
 
-	private function checkNginxIps($ip) {
+	private function checkIps($ip, $ext_ips) {
 		$ngips = $this->config->get('dnshijackmonitor.server.ngips');
-		foreach ($ngips as $ips) {
+		$ips_arr = array_merge($ngips, $ext_ips);
+		foreach ($ips_arr as $ips) {
 			if (self::checkIp4($ip, $ips)) {
 				return true;
 			}
@@ -81,14 +82,15 @@ class DnsHijackMonitor extends \Service\Service {
 					if (count($answers)) {
 						foreach ($response->getAnswerRecords() as $record) {
 							$this->log->trace("$view_name |$rnd_server => {$row['subdomain']} |" . $record->getData());
-							if (!$this->checkNginxIps($record->getData())) {
+							$ext_ips = explode(',', $row['ext_ips']);
+							if (!$this->checkIps($record->getData(), $ext_ips)) {
 								$data = [
 									'class' => 'DnsHijackMonitor',
 									'group' => $row['group'],
 									'time' => time(),
 									'view_name' => $view_name,
 									'dns_server' => $rnd_server,
-									'dns_record' => $record->getData(),
+									'dns_record' => (string) $record->getData(),
 									'domain' => $row['subdomain'],
 								];
 								$this->events->trigger('notification', $data);

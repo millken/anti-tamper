@@ -6,9 +6,9 @@ use GuzzleHttp\Client;
 class Worker extends \Controller\Controller {
 
 	public function loader() {
-		$this->loadKeywordMonitor();
-		$this->loadSensitiveWordMonitor();
-		$this->loadTamperMonitor();
+		//$this->loadKeywordMonitor();
+		//$this->loadSensitiveWordMonitor();
+		//$this->loadTamperMonitor();
 		$this->loadDnsHijackMonitor();
 	}
 
