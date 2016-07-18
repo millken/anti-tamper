@@ -14,6 +14,7 @@ use \LibDNS\Records\ResourceQTypes;
 
 class DnsHijackMonitor extends \Service\Service {
 	private $dnsServer;
+	private $ngxServer;
 	/**
 	 * https://github.com/symfony/http-foundation/blob/master/IpUtils.php#L36
 	 * Compares two IPv4 addresses.
@@ -43,7 +44,7 @@ class DnsHijackMonitor extends \Service\Service {
 
 	private function checkIps($ip, $ext_ips) {
 		$ngips = $this->config->get('dnshijackmonitor.server.ngips');
-		$ips_arr = array_merge($ngips, $ext_ips);
+		$ips_arr = array_unique(array_filter(array_merge($this->ngxServer, $ngips, $ext_ips)));
 		foreach ($ips_arr as $ips) {
 			if (self::checkIp4($ip, $ips)) {
 				return true;
@@ -54,6 +55,7 @@ class DnsHijackMonitor extends \Service\Service {
 
 	public function start($id) {
 		$this->makeDnsServerCache();
+		$this->makeNgxServerCache();
 		$row = $this->db->table("dnshijack_monitor")->where("id=?", $id)->fetch();
 		foreach ((array) $this->dnsServer['data'] as $ds) {
 			$view_name = $ds['view_name'];
@@ -151,7 +153,7 @@ class DnsHijackMonitor extends \Service\Service {
 	}
 
 	private function makeDnsServerCache() {
-		$file = $this->config->get("dnshijackmonitor.server.file");
+		$file = $this->config->get("dnshijackmonitor.server.dns_cache");
 		if (file_exists($file)) {
 			if (empty($this->dnsServer)) {
 				$this->dnsServer = json_decode(file_get_contents($file), true);
@@ -188,7 +190,50 @@ class DnsHijackMonitor extends \Service\Service {
 					$this->log->debug("dns server response: " . $body);
 					$this->dnsServer = json_decode($body, true);
 
-					file_put_contents($this->config->get("dnshijackmonitor.server.file"), $body);
+					file_put_contents($this->config->get("dnshijackmonitor.server.dns_cache"), $body);
+				} else {
+					$this->log->warning(sprintf(" got status: %d", $res->getStatusCode()));
+				}
+			},
+			function (RequestException $e) {
+				$this->log->error(sprintf("request error: %s", $e->getMessage()));
+			}
+		)->wait();
+	}
+
+	private function makeNgxServerCache() {
+		$file = $this->config->get("dnshijackmonitor.server.ngx_cache");
+		if (file_exists($file)) {
+			if (empty($this->ngxServer)) {
+				$this->ngxServer = json_decode(file_get_contents($file), true);
+			}
+
+			if (time() - filemtime($file) < 86400) {
+				return;
+			}
+
+		}
+		$headers = [
+			"User-Agent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
+			'Accept' => 'application/json, text/javascript, */*; q=0.01',
+			'Accept-Encoding' => 'deflate',
+			'X-Requested-With' => 'XMLHttpRequest',
+		];
+		$url = $this->config->get("dnshijackmonitor.server.ngx_url");
+		$client = new Client();
+		$promise = $client->getAsync($url, [
+			'stream' => true,
+			'timeout' => 5.14,
+			'headers' => $headers,
+		]);
+		$promise->then(
+			function (ResponseInterface $res) {
+				if ($res->getStatusCode() == 200) {
+					$body = $res->getBody()->getContents();
+					$this->log->debug("ngx server response: " . $body);
+					$this->ngxServer = json_decode($body, true);
+
+					file_put_contents($this->config->get("dnshijackmonitor.server.ngx_cache"), $body);
 				} else {
 					$this->log->warning(sprintf(" got status: %d", $res->getStatusCode()));
 				}
