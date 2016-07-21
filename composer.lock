@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fcbc65b606dfcbbc8401ff5648465ed1",
-    "content-hash": "d5c339bcb371416d3614bbc7e1acb1f7",
+    "hash": "caa4d8817f22779a0463d1abc05e605b",
+    "content-hash": "5e79e7565a26e01529046e8b71364c66",
     "packages": [
         {
             "name": "baijian/ahocorasick",
@@ -352,6 +352,57 @@
             "time": "2016-03-21 09:16:39"
         },
         {
+            "name": "microweber/screen",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/microweber/screen.git",
+                "reference": "c976b1fffea1ea593785171663e0e6196f3a5311"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/microweber/screen/c976b1fffea1ea593785171663e0e6196f3a5311.zip",
+                "reference": "c976b1fffea1ea593785171663e0e6196f3a5311",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "symfony/var-dumper": "~2.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Screen\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Peter Ivanov",
+                    "email": "peter@microweber.com",
+                    "homepage": "http://microweber.com"
+                },
+                {
+                    "name": "André Filipe",
+                    "email": "andre.r.flip@gmail.com",
+                    "homepage": "http://masnathan.com"
+                }
+            ],
+            "description": "A PHP Class to interact with PhantomJs an capture screenshot of a webpage",
+            "keywords": [
+                "capture",
+                "phantomjs",
+                "print-screen",
+                "screen"
+            ],
+            "time": "2016-01-25 16:09:20"
+        },
+        {
             "name": "millken/ypf",
             "version": "dev-master",
             "source": {
@@ -486,6 +537,39 @@
                 "response"
             ],
             "time": "2015-05-04 20:22:00"
+        },
+        {
+            "name": "travail/image-perceptualhash",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/travail/php-Image-PerceptualHash.git",
+                "reference": "471391788dd6021fa963937a27f7ba5f7a5fabdd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/travail/php-Image-PerceptualHash/471391788dd6021fa963937a27f7ba5f7a5fabdd.zip",
+                "reference": "471391788dd6021fa963937a27f7ba5f7a5fabdd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Image\\": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "PHP-3.0"
+            ],
+            "description": "travail/image-perceptualhash",
+            "time": "2015-10-09 09:34:54"
         }
     ],
     "packages-dev": [],

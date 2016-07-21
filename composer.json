@@ -6,7 +6,9 @@
         "league/event": "^2.1",
         "baijian/ahocorasick": "^0.0.1",
         "guzzlehttp/guzzle": "^6.2",
-        "daverandom/libdns": "^1.1"
+        "daverandom/libdns": "^1.1",
+        "microweber/screen": "^1.0",
+        "travail/image-perceptualhash": "^0.1.0"
     },
     "authors": [
         {
