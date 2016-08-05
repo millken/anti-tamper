@@ -10,6 +10,7 @@ class Worker extends \Controller\Controller {
 		$this->loadSensitiveWordMonitor();
 		$this->loadTamperMonitor();
 		$this->loadDnsHijackMonitor();
+		$this->loadScreenShotMonitor();
 	}
 
 	private function loadKeywordMonitor() {
@@ -85,6 +86,23 @@ class Worker extends \Controller\Controller {
 					'group' => $row['group'],
 					'subdomain' => $row['subdomain'],
 					'ext_ips' => $row['ext_ips'],
+				],
+			])->wait();
+
+		}
+	}
+
+	private function loadScreenShotMonitor() {
+		$this->log->info("loading ScreenShotMonitor task...");
+		$rows = $this->db->table("screenshot")->where("status=1")->select();
+		$client = new Client();
+		foreach ($rows as $row) {
+
+			$client->postAsync('http://127.0.0.1:9002/api/ScreenShotMonitor?action=add', [
+				'form_params' => [
+					'interval' => $row['interval'],
+					'group' => $row['group'],
+					'url' => $row['url'],
 				],
 			])->wait();
 

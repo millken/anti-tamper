@@ -14,6 +14,10 @@ class Notification extends \Service\Service implements ListenerInterface {
 	public function handle(EventInterface $event, $param = []) {
 		$this->log->event("event: " . $event->getName() . ", param: " . print_r($param, true));
 		$config = $this->config->get("db.beanstalk");
+		if (isset($param['beanstalk'])) {
+			$config = array_merge($config, $param['beanstalk']);
+			unset($param['beanstalk']);
+		}
 		(new Pool)
 			->addServer($config["host"], $config["port"])
 			->useTube($config["tube"])

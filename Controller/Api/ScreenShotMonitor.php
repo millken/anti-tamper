@@ -24,7 +24,7 @@ class ScreenShotMonitor extends \Controller\Controller {
 		$interval = $this->request->post("interval", "intval", 60);
 		$group = $this->request->post('group', 'trim', '');
 		$url = $this->request->post('url', 'trim', '');
-		$this->log->info("got post data : " . print_r($this->request->post, true));
+		$this->log->info("ScreenShotMonitor got post data : " . print_r($this->request->post, true));
 		if ($group && $interval > 0 && $url) {
 			$this->db->table(self::TABLE)->where("`group`=?", $group)->delete();
 			$data = [
@@ -60,7 +60,7 @@ class ScreenShotMonitor extends \Controller\Controller {
 	}
 
 	private function del() {
-		$this->log->info("got post data : " . print_r($this->request->post, true));
+		$this->log->info("ScreenShotMonitor got post data : " . print_r($this->request->post, true));
 		$url = $this->request->post('url', 'trim', '');
 		$group = $this->request->post('group', 'trim', '');
 		$this->db->table(self::TABLE)->where("`group`=? and `url`=?", $group, $url)->delete();
