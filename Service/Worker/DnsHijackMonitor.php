@@ -84,6 +84,7 @@ class DnsHijackMonitor extends \Service\Service {
 					if (count($answers)) {
 						foreach ($response->getAnswerRecords() as $record) {
 							$this->log->trace("$view_name |$rnd_server => {$row['subdomain']} |" . $record->getData());
+							if (strpos($record->getData(), "cname")) continue;
 							$ext_ips = explode(',', $row['ext_ips']);
 							if (!$this->checkIps($record->getData(), $ext_ips)) {
 								$data = [
